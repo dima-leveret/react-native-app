@@ -1,41 +1,65 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { WelcomeScreen } from "./screens/WelcomeScreen";
 import { UsersScreen } from "./screens/UsersScreen";
+import { ManageUser } from "./screens/ManageUser";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import { Colors } from "./constants/colors";
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const UsersOveview = () => {
+  return (
+    <Tab.Navigator
+      activeColor="white"
+      barStyle={{ backgroundColor: Colors.primaryPistachio500 }}>
+      <Tab.Screen
+        name="Home"
+        component={WelcomeScreen}
+        options={{
+          tabBarIcon: () => <AntDesign name="home" size={24} />,
+        }}
+      />
+      <Tab.Screen
+        name="Users"
+        component={UsersScreen}
+        options={{
+          tabBarIcon: () => <Feather name="users" size={24} />,
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 export default function App() {
   return (
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Tab.Navigator
-          activeColor="white"
-          barStyle={{ backgroundColor: Colors.primaryPistachio500 }}>
-          <Tab.Screen
-            name="Home"
-            component={WelcomeScreen}
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: Colors.primaryPistachio500 },
+          }}>
+          <Stack.Screen
+            name="UsersOveview"
+            component={UsersOveview}
             options={{
-              tabBarIcon: () => <AntDesign name="home" size={24} />,
+              headerShown: false,
             }}
           />
-          <Tab.Screen
-            name="Users"
-            component={UsersScreen}
+          <Stack.Screen
+            name="ManageUser"
+            component={ManageUser}
             options={{
-              tabBarIcon: () => <Feather name="users" size={24} />,
+              title: "Manage User",
             }}
           />
-        </Tab.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   );
 }
-
-const styles = StyleSheet.create({});

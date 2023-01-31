@@ -3,6 +3,7 @@ import { Colors } from "../constants/colors";
 // import { getUsers } from "../store/firebase";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { UsersList } from "../components/UsersList";
 
 const URL =
   "https://rn-email-app-19b9a-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -36,25 +37,25 @@ export const UsersScreen = () => {
   }, []);
 
   return (
-    <View style={styles.constiner}>
-      <Text style={styles.text}> Users screen </Text>
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.id}
-        renderItem={(itemData) => {
-          return <Text> {itemData.item.name} </Text>;
-        }}
-      />
+    <View style={styles.rootConstiner}>
+      <View style={styles.listContainer}>
+        <UsersList users={users} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  constiner: {
+  rootConstiner: {
     flex: 1,
     backgroundColor: Colors.primaryPistachio300,
+  },
+  listContainer: {
+    fle: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 100,
+    overflow: "hidden",
   },
   text: {
     color: "white",
