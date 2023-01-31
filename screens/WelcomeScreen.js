@@ -12,7 +12,7 @@ export const WelcomeScreen = () => {
 const styles = StyleSheet.create({
   constiner: {
     flex: 1,
-    backgroundColor: Colors.primaryPistachio400,
+    backgroundColor: Colors.primaryPistachio300,
     alignItems: "center",
     justifyContent: "center",
   },
