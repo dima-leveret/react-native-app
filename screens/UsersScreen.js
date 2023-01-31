@@ -4,6 +4,7 @@ import { getUsers } from "../store/firebase";
 import { useState, useEffect, useContext } from "react";
 import { UsersContext } from "../store/users-context";
 import { UsersList } from "../components/UsersList";
+import { LoaderOverlay } from "../ui/LoaderOverlay";
 
 export const UsersScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,11 +25,7 @@ export const UsersScreen = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <LoaderOverlay />;
   }
 
   return (
