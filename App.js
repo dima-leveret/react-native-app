@@ -8,6 +8,7 @@ import { ManageUser } from "./screens/ManageUser";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import { Colors } from "./constants/colors";
+import { UsersContextProvider } from "./store/users-context";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,27 +40,29 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: Colors.primaryPistachio500 },
-          }}>
-          <Stack.Screen
-            name="UsersOveview"
-            component={UsersOveview}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="ManageUser"
-            component={ManageUser}
-            options={{
-              title: "Manage User",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UsersContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: Colors.primaryPistachio500 },
+            }}>
+            <Stack.Screen
+              name="UsersOveview"
+              component={UsersOveview}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ManageUser"
+              component={ManageUser}
+              options={{
+                title: "Manage User",
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UsersContextProvider>
     </>
   );
 }
