@@ -1,45 +1,40 @@
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text, FlatList, Button } from "react-native";
 import { Colors } from "../constants/colors";
-// import { getUsers } from "../store/firebase";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { getUsers } from "../store/firebase";
+import { useState, useEffect, useContext } from "react";
+import { UsersContext } from "../store/users-context";
 import { UsersList } from "../components/UsersList";
 
-const URL =
-  "https://rn-email-app-19b9a-default-rtdb.europe-west1.firebasedatabase.app/";
-
 export const UsersScreen = () => {
-  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const usersCtx = useContext(UsersContext);
 
   useEffect(() => {
-    axios
-      .get(URL + "/users.json")
-      .then((res) => {
-        console.log(res.data);
-        const fetchedUsers = [];
-        for (const key in res.data) {
-          fetchedUsers.unshift({
-            ...res.data[key],
-            id: key,
-          });
-        }
-        setUsers(fetchedUsers);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    console.log("fetched user =>", users);
-
-    // const fechedUsers = getUsers();
-    // setUsers(fechedUsers);
-    // console.log("fetched users =>", fechedUsers);
+    async function fetchUsers() {
+      try {
+        setIsLoading(true);
+        const fechedUsers = await getUsers();
+        setIsLoading(false);
+        usersCtx.setUsers(fechedUsers);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    fetchUsers();
   }, []);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.rootConstiner}>
       <View style={styles.listContainer}>
-        <UsersList users={users} />
+        <UsersList users={usersCtx.users} />
       </View>
     </View>
   );
@@ -56,14 +51,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 100,
     overflow: "hidden",
-  },
-  text: {
-    color: "white",
-  },
-  text2: {
-    color: "bleck",
-  },
-  users: {
-    flex: 1,
   },
 });
