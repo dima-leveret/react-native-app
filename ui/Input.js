@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, TextInput } from "react-native";
-import { Colors } from "../constants/colors";
 
 export const Input = ({ label, style, inputConfig, editable }) => {
   const inputStyles = [styles.input];

@@ -44,6 +44,13 @@ export const ManageUser = ({ route, navigation }) => {
     }
   };
 
+  const emailIconPress = () => {
+    navigation.navigate("SendEmailForm", {
+      userEmail: route.params.userEmail,
+      userName: route.params.userName,
+    });
+  };
+
   if (isLoading) {
     return <LoaderOverlay />;
   }
@@ -69,6 +76,14 @@ export const ManageUser = ({ route, navigation }) => {
         disabled={disabled}
         onPress={deleteUserHandler}
       />
+
+      <IconBtn
+        iconStyle={styles.emailIcon}
+        size={80}
+        icon="mail"
+        onPress={emailIconPress}
+        color={Colors.primaryPistachio100}
+      />
     </View>
   );
 };
@@ -93,5 +108,11 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginVertical: 30,
     opacity: 0.5,
+  },
+  emailIcon: {
+    width: "100%",
+    borderWidth: 4,
+    borderRadius: 8,
+    borderColor: Colors.primaryPistachio100,
   },
 });
