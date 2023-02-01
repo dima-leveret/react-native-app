@@ -10,6 +10,7 @@ import Feather from "react-native-vector-icons/Feather";
 import { Colors } from "./constants/colors";
 import { UsersContextProvider } from "./store/users-context";
 import { AddNewUser } from "./screens/AddNewUser";
+import { SendEmailForm } from "./screens/SendEmailForm";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -66,6 +67,13 @@ export default function App() {
               component={AddNewUser}
               options={{
                 title: "Add new user",
+                presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="SendEmailForm"
+              component={SendEmailForm}
+              options={{
                 presentation: "modal",
               }}
             />
