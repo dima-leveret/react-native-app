@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     fle: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 100,
+    marginTop: 50,
     overflow: "hidden",
   },
 });

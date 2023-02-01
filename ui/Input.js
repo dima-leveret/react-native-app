@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { Colors } from "../constants/colors";
 
-export const Input = ({ label, style, inputConfig }) => {
+export const Input = ({ label, style, inputConfig, editable }) => {
   const inputStyles = [styles.input];
 
   if (inputConfig && inputConfig.multiline) {
@@ -11,7 +11,7 @@ export const Input = ({ label, style, inputConfig }) => {
   return (
     <View style={[styles.inputContainer, style]}>
       <Text style={styles.label}> {label} </Text>
-      <TextInput style={inputStyles} {...inputConfig} />
+      <TextInput editable={editable} style={inputStyles} {...inputConfig} />
     </View>
   );
 };
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   label: {
-    fontSize: 12,
+    fontSize: 16,
     color: "white",
     marginBottom: 4,
   },

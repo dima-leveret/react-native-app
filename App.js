@@ -9,6 +9,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import { Colors } from "./constants/colors";
 import { UsersContextProvider } from "./store/users-context";
+import { AddNewUser } from "./screens/AddNewUser";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -58,6 +59,14 @@ export default function App() {
               component={ManageUser}
               options={{
                 title: "Manage User",
+              }}
+            />
+            <Stack.Screen
+              name="AddNewUser"
+              component={AddNewUser}
+              options={{
+                title: "Add new user",
+                presentation: "modal",
               }}
             />
           </Stack.Navigator>

@@ -5,6 +5,7 @@ import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 
 export const UserForm = ({
+  editable,
   onCalcel,
   onSubmit,
   submitButtonLabel,
@@ -69,14 +70,15 @@ export const UserForm = ({
   return (
     <View>
       <Input
+        editable={!editable}
         label="Name"
         inputConfig={{
-          editable: false,
           onChangeText: inputChangeHandler.bind(this, "name"),
           value: input.name.value,
         }}
       />
       <Input
+        editable={!editable}
         label="Surname"
         inputConfig={{
           onChangeText: inputChangeHandler.bind(this, "surname"),
@@ -84,6 +86,7 @@ export const UserForm = ({
         }}
       />
       <Input
+        editable={!editable}
         label="Email"
         inputConfig={{
           autoCorrect: false,
@@ -101,7 +104,10 @@ export const UserForm = ({
         <Button mode="flat" style={styles.button} onPress={onCalcel}>
           Cancel
         </Button>
-        <Button style={styles.button} onPress={submitHandler}>
+        <Button
+          disabled={editable}
+          style={styles.button}
+          onPress={submitHandler}>
           {submitButtonLabel}
         </Button>
       </View>
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   button: {
-    minWidth: 120,
+    flex: 1,
     marginHorizontal: 8,
   },
   errorText: {
