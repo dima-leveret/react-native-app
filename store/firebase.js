@@ -19,3 +19,17 @@ export const getUsers = async () => {
   }
   return users;
 };
+
+export const storeUser = async (userData) => {
+  const response = await axios.post(URL + "/users.json", userData);
+  const id = response.data.name;
+  return id;
+};
+
+export const updateUser = (id, userData) => {
+  return axios.put(URL + `/users/${id}.json`, userData);
+};
+
+export const deleteUser = (id) => {
+  return axios.delete(URL + `/users/${id}.json`);
+};

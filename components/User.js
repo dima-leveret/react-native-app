@@ -6,7 +6,9 @@ export const User = ({ id, name, surname }) => {
   const navigation = useNavigation();
 
   const userPressHandler = () => {
-    navigation.navigate("ManageUser");
+    navigation.navigate("ManageUser", {
+      userId: id,
+    });
   };
 
   return (
