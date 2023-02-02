@@ -23,6 +23,10 @@ export const UserForm = ({
       value: defaultValues ? defaultValues.email : "",
       isValid: true,
     },
+    confirmEmail: {
+      value: defaultValues ? defaultValues.email : "",
+      isValid: true,
+    },
   });
 
   const inputChangeHandler = (inputIdentifier, enteredValue) => {
@@ -45,6 +49,9 @@ export const UserForm = ({
     const surnameIsValid = userData.surname.trim().length > 0;
     const emailIsValid =
       userData.email.trim().length > 0 && userData.email.trim().includes("@");
+    const confirmEmailIsValid =
+      input.confirmEmail.value.length > 0 &&
+      input.confirmEmail.value.trim().includes("@");
 
     if (!nameIsValid || !surnameIsValid || !emailIsValid) {
       setInput((current) => {
@@ -55,6 +62,10 @@ export const UserForm = ({
             value: current.email.value,
             isValid: emailIsValid,
           },
+          confirmEmail: {
+            value: current.confirmEmail.value,
+            isValid: confirmEmailIsValid,
+          },
         };
       });
       return;
@@ -64,7 +75,10 @@ export const UserForm = ({
   };
 
   const formIsInvalid =
-    !input.name.isValid || !input.surname.isValid || !input.email.isValid;
+    !input.name.isValid ||
+    !input.surname.isValid ||
+    !input.email.isValid ||
+    input.email.value !== input.confirmEmail.value;
 
   return (
     <View>
@@ -94,22 +108,32 @@ export const UserForm = ({
           value: input.email.value,
         }}
       />
-      {formIsInvalid && (
-        <Text style={styles.errorText}>
-          Invalid input. Please check your inputs values
-        </Text>
-      )}
+      <Input
+        editable={!editable}
+        label="Confirm email"
+        inputConfig={{
+          autoCorrect: false,
+          keyboardType: "email-address",
+          onChangeText: inputChangeHandler.bind(this, "confirmEmail"),
+          value: input.confirmEmail.value,
+        }}
+      />
       <View style={styles.buttons}>
         <Button mode="flat" style={styles.button} onPress={onCalcel}>
           Cancel
         </Button>
         <Button
-          disabled={editable}
+          disabled={formIsInvalid ? !editable : editable}
           style={styles.button}
           onPress={submitHandler}>
           {submitButtonLabel}
         </Button>
       </View>
+      {formIsInvalid && (
+        <Text style={styles.errorText}>
+          Invalid input. Please check your inputs values
+        </Text>
+      )}
     </View>
   );
 };
@@ -122,7 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 20,
   },
   button: {
     flex: 1,

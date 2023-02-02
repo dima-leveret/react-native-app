@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { UserForm } from "../components/UserForm";
 import { Colors } from "../constants/colors";
 import { LoaderOverlay } from "../ui/LoaderOverlay";
@@ -31,13 +31,13 @@ export const AddNewUser = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <UserForm
         submitButtonLabel="Add"
         onCalcel={cancelHandler}
         onSubmit={confirmHandler}
       />
-    </View>
+    </ScrollView>
   );
 };
 
