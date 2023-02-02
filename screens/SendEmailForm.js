@@ -1,15 +1,18 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { Colors } from "../constants/colors";
 import { Input } from "../ui/Input";
 import { IconBtn } from "../ui/IconBtn";
 import { useLayoutEffect, useState } from "react";
+import { ErrorOverlay } from "../ui/ErrorOverlay";
+import { LoaderOverlay } from "../ui/LoaderOverlay";
 
 export const SendEmailForm = ({ route, navigation }) => {
   const userEmail = route.params?.userEmail;
   const userName = route.params?.userName;
 
   const [isValid, setIsValid] = useState(true);
-  const [status, setStatus] = useState();
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [inputs, setInputs] = useState({
     subject: "",
@@ -37,10 +40,10 @@ export const SendEmailForm = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const sendEmail = async (e) => {
-    e.preventDefault();
-    if (inputs.subject.length > 0 || inputs.message > 0) {
-      await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+  const sendEmail = () => {
+    if (inputs.subject.length > 0 && inputs.message.length > 0) {
+      setIsLoading(true);
+      fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,20 +55,35 @@ export const SendEmailForm = ({ route, navigation }) => {
           accessToken: "IBIC7LOhJxROl0g4Q9M37",
           template_params: inputs,
         }),
-      });
-
-      navigation.goBack();
+      })
+        .then((res) => {
+          console.log(res.status);
+          if (res.status !== 200) {
+            setError("Can not send message. Try again later");
+          } else {
+            setIsLoading(false);
+            navigation.goBack();
+          }
+        })
+        .catch((err) => {
+          console.log("err", err);
+          setError(err.message);
+        });
     } else {
       setIsValid(false);
     }
   };
 
-  if (!isValid) {
-    console.log(" invalid inputs ");
+  if (error) {
+    return <ErrorOverlay message={error} />;
+  }
+
+  if (isLoading) {
+    return <LoaderOverlay />;
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Input
         label="Subject"
         inputConfig={{
@@ -81,9 +99,27 @@ export const SendEmailForm = ({ route, navigation }) => {
           value: inputs.message,
         }}
       />
-      <IconBtn onPress={exitIconPess} icon="exit" size={50} />
-      <IconBtn onPress={sendEmail} icon="send" size={70} />
-    </View>
+      <IconBtn
+        iconStyle={styles.closeIcon}
+        onPress={exitIconPess}
+        icon="close"
+        size={50}
+        color="white"
+      />
+      <IconBtn
+        iconStyle={styles.sendIcon}
+        onPress={sendEmail}
+        icon="send"
+        size={70}
+        color={Colors.primaryPistachio100}
+      />
+
+      {!isValid && (
+        <Text style={styles.errortext}>
+          Empty input. All inputs are required
+        </Text>
+      )}
+    </ScrollView>
   );
 };
 
@@ -92,5 +128,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primaryPistachio300,
     padding: 24,
+  },
+  closeIcon: {
+    width: "100%",
+    borderWidth: 4,
+    borderRadius: 8,
+    borderColor: "white",
+    marginVertical: 30,
+    opacity: 0.5,
+  },
+  sendIcon: {
+    width: "100%",
+    borderWidth: 4,
+    borderRadius: 8,
+    borderColor: Colors.primaryPistachio100,
+  },
+
+  errortext: {
+    textAlign: "center",
+    color: "tomato",
+    margin: 8,
   },
 });

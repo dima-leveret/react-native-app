@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { Colors } from "../constants/colors";
 import { useContext, useState } from "react";
 import { UsersContext } from "../store/users-context";
@@ -56,7 +56,7 @@ export const ManageUser = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Button mode={!disabled && "flat"} onPress={() => setDisableb(!disabled)}>
         {disabled ? "Edit mode" : "Cancel edit mode"}
       </Button>
@@ -84,7 +84,7 @@ export const ManageUser = ({ route, navigation }) => {
         onPress={emailIconPress}
         color={Colors.primaryPistachio100}
       />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 8,
     borderColor: "tomato",
-    marginVertical: 30,
+    marginVertical: 10,
   },
   trashIconDisabled: {
     width: "100%",
     borderWidth: 4,
     borderRadius: 8,
     borderColor: "white",
-    marginVertical: 30,
+    marginVertical: 10,
     opacity: 0.5,
   },
   emailIcon: {
