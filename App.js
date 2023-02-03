@@ -11,6 +11,8 @@ import { Colors } from "./constants/colors";
 import { UsersContextProvider } from "./store/users-context";
 import { AddNewUser } from "./screens/AddNewUser";
 import { SendEmailForm } from "./screens/SendEmailForm";
+import { LoginSceen } from "./screens/LoginScreen";
+import { SignupSceen } from "./screens/SignupScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -75,6 +77,20 @@ export default function App() {
               component={SendEmailForm}
               options={{
                 presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="LoginSceen"
+              component={LoginSceen}
+              options={{
+                title: "Log in",
+              }}
+            />
+            <Stack.Screen
+              name="SignupSceen"
+              component={SignupSceen}
+              options={{
+                title: "Sign up",
               }}
             />
           </Stack.Navigator>

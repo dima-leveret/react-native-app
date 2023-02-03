@@ -1,4 +1,5 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UsersContext = createContext({
   users: [],
@@ -6,6 +7,10 @@ export const UsersContext = createContext({
   deleteUser: (id) => {},
   updateUser: (id, { name, surname, email }) => {},
   setUsers: (users) => {},
+  token: "",
+  isAuthenticated: false,
+  authenticate: (token) => {},
+  logout: () => {},
 });
 
 function usersReducer(state, action) {
@@ -33,6 +38,8 @@ function usersReducer(state, action) {
 export const UsersContextProvider = ({ children }) => {
   const [usersState, dispatch] = useReducer(usersReducer, []);
 
+  const [authToken, setAuthToken] = useState();
+
   function addUser(userData) {
     dispatch({ type: "ADD", payload: userData });
   }
@@ -49,12 +56,38 @@ export const UsersContextProvider = ({ children }) => {
     dispatch({ type: "UPDATE", payload: { id: id, data: userData } });
   }
 
+  useEffect(() => {
+    const getToken = async () => {
+      const storedToken = await AsyncStorage.getItem("token");
+
+      if (storedToken) {
+        setAuthToken(storedToken);
+      }
+    };
+
+    getToken();
+  }, []);
+
+  const authenticate = (token) => {
+    setAuthToken(token);
+    AsyncStorage.setItem("token", token);
+  };
+
+  const logout = () => {
+    setAuthToken(null);
+    AsyncStorage.removeItem("token");
+  };
+
   const value = {
     users: usersState,
     addUser: addUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
     setUsers: setUsers,
+    token: authToken,
+    isAuthenticated: !!authToken,
+    authenticate: authenticate,
+    logout: logout,
   };
 
   return (
