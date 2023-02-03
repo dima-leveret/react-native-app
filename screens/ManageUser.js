@@ -57,9 +57,14 @@ export const ManageUser = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Button mode={!disabled && "flat"} onPress={() => setDisableb(!disabled)}>
-        {disabled ? "Edit mode" : "Cancel edit mode"}
-      </Button>
+      {usersCtx.isAuthenticated && (
+        <Button
+          mode={!disabled && "flat"}
+          onPress={() => setDisableb(!disabled)}>
+          {disabled ? "Edit mode" : "Cancel edit mode"}
+        </Button>
+      )}
+
       <UserForm
         editable={disabled}
         submitButtonLabel="Update"
@@ -67,15 +72,16 @@ export const ManageUser = ({ route, navigation }) => {
         onSubmit={confirmHandler}
         defaultValues={selecteUser}
       />
-
-      <IconBtn
-        size={50}
-        color={disabled ? "white" : "tomato"}
-        icon="trash-outline"
-        iconStyle={disabled ? styles.trashIconDisabled : styles.trashIcon}
-        disabled={disabled}
-        onPress={deleteUserHandler}
-      />
+      {usersCtx.isAuthenticated && (
+        <IconBtn
+          size={50}
+          color={disabled ? "white" : "tomato"}
+          icon="trash-outline"
+          iconStyle={disabled ? styles.trashIconDisabled : styles.trashIcon}
+          disabled={disabled}
+          onPress={deleteUserHandler}
+        />
+      )}
 
       <IconBtn
         iconStyle={styles.emailIcon}

@@ -1,7 +1,8 @@
 import { StyleSheet, View, Text } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
+import { UsersContext } from "../store/users-context";
 
 export const UserForm = ({
   editable,
@@ -28,6 +29,8 @@ export const UserForm = ({
       isValid: true,
     },
   });
+
+  const authCtx = useContext(UsersContext);
 
   const inputChangeHandler = (inputIdentifier, enteredValue) => {
     setInput((current) => {
@@ -118,17 +121,20 @@ export const UserForm = ({
           value: input.confirmEmail.value,
         }}
       />
-      <View style={styles.buttons}>
-        <Button mode="flat" style={styles.button} onPress={onCalcel}>
-          Cancel
-        </Button>
-        <Button
-          disabled={formIsInvalid ? !editable : editable}
-          style={styles.button}
-          onPress={submitHandler}>
-          {submitButtonLabel}
-        </Button>
-      </View>
+      {authCtx.isAuthenticated && (
+        <View style={styles.buttons}>
+          <Button mode="flat" style={styles.button} onPress={onCalcel}>
+            Cancel
+          </Button>
+          <Button
+            disabled={formIsInvalid ? !editable : editable}
+            style={styles.button}
+            onPress={submitHandler}>
+            {submitButtonLabel}
+          </Button>
+        </View>
+      )}
+
       {formIsInvalid && (
         <Text style={styles.errorText}>
           Invalid input. Please check your inputs values
